@@ -8,8 +8,3 @@ More info:
 
 ## Table of Contents
 
-* [Lesson 1](lessons/lesson-1#lesson-1)
-
-## Docs
-
-To generate the docs, use `make docs`.
