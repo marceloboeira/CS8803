@@ -9,6 +9,7 @@ More info:
 ## Table of Contents
 
 * [Lesson 1](lessons/lesson-1#lesson-1)
+* [Lesson 2](lessons/lesson-2#lesson-2)
 
 ## Docs
 
