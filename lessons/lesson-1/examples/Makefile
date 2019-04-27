@@ -7,7 +7,7 @@ all: linked_list rand
 linked_list: linked_list.c
 	@$(CC) linked_list.c -o linked_list
 
-.PHONY:rand
+.PHONY: rand
 rand: rand.c
 	@$(CC) rand.c -o rand
 
