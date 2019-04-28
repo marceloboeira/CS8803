@@ -244,3 +244,7 @@ On a 64-bit Linux-based OS, which system call is used to...
 1. Set the group identity of a process? `SETGID` / `SETGID16/32`
 1. Mount a file system? `MOUNT`
 1. Read/Write System Paramters? `SYSCTL`
+
+## Linux Architecture
+
+<img src="linux.png" width="500">
