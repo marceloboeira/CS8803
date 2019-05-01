@@ -267,9 +267,9 @@ IPC allows data transfer between address spaces without compromising process iso
             |_________|
 ```
 
-* + OS manages it
-* + Provides APIs to send/receive date
-* - every piece of data must be copied to from P1-->channel-->P2
+* `+` OS manages it
+* `+` Provides APIs to send/receive date
+* `-` every piece of data must be copied to from P1-->channel-->P2
 
 #### Shared-Memory IPC
 
@@ -283,10 +283,10 @@ IPC allows data transfer between address spaces without compromising process iso
 |_________|              |________|
 ```
 
-* + OS is out of the way, no overheads
-* + No need for copying
-* - no defined APIs
-* - can generates more concurrency/asynchronous errors since the state is shared
+* `+` OS is out of the way, no overheads
+* `+` No need for copying
+* `-` no defined APIs
+* `-` can generates more concurrency/asynchronous errors since the state is shared
 
 ### Quis: Shared Memory Quiz
 
