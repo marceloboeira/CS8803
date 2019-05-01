@@ -192,7 +192,7 @@ The CPU is able to execute the process on which state(s)?
 
 ### Process Creation
 
-<img src="process_states.png" height="300">
+<img src="process_tree.png" height="300">
 
 There are 2 main mechanisms for creating a process:
 
