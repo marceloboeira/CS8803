@@ -7,7 +7,7 @@
 * What are the key components?
 * Design and implementaion of consideration of operating systems
 
-## Simple OS Definition
+## Simple Definition
 
 Operating System - a piece of software that **abtracts** and **arbitrates** the underlying hardware system.
 
