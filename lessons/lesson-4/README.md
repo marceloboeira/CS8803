@@ -164,3 +164,13 @@ When a cache is hot...
 - [ ] it can malfunctions so we must context switch to another process
 - [x] most process data is in the cache so the process performance will be at its best
 - [x] sometimes we must context switch
+
+## Process Lifecycle
+
+Processes can be either `running` or `idle`.
+
+When a process is running it can be interrupted and context-switched, which leads it to a `ready` state, it is ready to execute but it is not the current process.
+
+The scheduler, from the OS, will at some point schedule it again.
+
+<img src="process_states.png" width="400">
