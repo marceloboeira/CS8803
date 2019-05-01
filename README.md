@@ -12,6 +12,7 @@ More info:
 * [Lesson 2](lessons/lesson-2#lesson-2)
 * [Lesson 3](lessons/lesson-3#lesson-3)
 * [Lesson 4](lessons/lesson-4#lesson-4)
+* [Lesson 5](lessons/lesson-5#lesson-5)
 
 ## Docs
 
