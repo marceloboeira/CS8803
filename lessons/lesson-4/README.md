@@ -174,3 +174,126 @@ When a process is running it can be interrupted and context-switched, which lead
 The scheduler, from the OS, will at some point schedule it again.
 
 <img src="process_states.png" width="400">
+
+When a process was just created, it starts with the `new` state, the PCB is setup at this time. Eventually, it gets to a `ready` state, but it is not executed, it waits for the scheduler to dispatch it. Once this happens, it moves to `running`.
+
+During running, a couple different things can happen. For instance, a context switch, which would move the program back to `ready`, as previously discussed. Another possibility is that the process needs IO, for a big file to be loaded, a HTTP request to be performed or likewise. The process then enters a `waiting` state, giving space to other process to use the CPU while it is waiting for IO, as soon IO returns it will be rescheduled and eventually run again.
+
+Finally, the process might enter `terminated` state, due to it's task to have finished or even given an error or something of a kind.
+
+### Quiz: Process State Quiz
+
+The CPU is able to execute the process on which state(s)?
+
+- [x] running - it is already executing
+- [x] ready - it is just waiting on the scheduler
+- [ ] waiting
+- [ ] new
+
+### Process Creation
+
+<img src="process_states.png" height="300">
+
+There are 2 main mechanisms for creating a process:
+
+* `fork`
+  * copies the PCB of the parent process
+  * both parent and child continue execution from the same point right after
+* `exec`
+  * it forks, but replaces the PCB
+  * points the child to the first instruction
+
+### Quiz: Parent Process Quiz
+
+On UNIX-based OSs, which process is often regarded as "the parent of all process"?
+> root-process
+
+On Android, which process is often regarded as "the parent of all process"?
+> zygote-process
+
+## Role of the CPU Scheduler
+
+The CPU scheduler determines which one of the currently `ready` processes will be dispatched to the CPU to start running, and how long it should run for.
+
+```
+                        CPU Scheduler  |
+Queue              |                   |
+                   |       CPU         | T
+... P1 | P2 | P3   |                   | I
+                   |                   | M
+                   |                   | E
+```
+
+* preemtp  - interrupt and save current context
+* schedule - run the scheduler to figure out what to run next
+* dispatch - dispatch process and switch into its context
+
+It's the CPU Schedulers' job to spend effiently the resources to **run processes** and not to run the above mentioned tasks, since they are just overhead.
+
+### What about I/O?
+
+Imagine a process made an IO request, the process is set to `wait` and it remains on the IO queue until the IO is performed/returned. Once it's returned, it goes to `ready`, eventually being picked up by the scheduler to run.
+
+### Quiz: Scheduler Responsibility Quiz
+
+Which options are NOT responsibility of the scheduler?
+
+- [x] maintaining the IO queue - scheduler has no control over IO operations or when they'll occur
+- [ ] maintaining the ready queue
+- [ ] deciding when to context switch
+- [x] deciding when to generate an event that a process is waiting on - same as I/O, no control external events
+
+## Inter Process Communication - IPC
+
+An OS must allow processes to interact to one another.
+
+IPC allows data transfer between address spaces without compromising process isolation, they might be periodic, streaming, shared, each one having performance and flexibility trade-offs.
+
+
+#### Message-Passing
+
+- OS provides communication channel, like shared-buffer
+- Processes can:
+  - Read (recv)
+  - Write (send)
+
+```
+|---------|              |--------|
+|   P1    |              |   P2   |
+|_________|              |________|
+     |                        ^
+     |      |---------|       |
+     |----->| channel |-------|
+            |_________|
+```
+
+* + OS manages it
+* + Provides APIs to send/receive date
+* - every piece of data must be copied to from P1-->channel-->P2
+
+#### Shared-Memory IPC
+
+- OS establishes a shared memory channel and maps into each process address space
+- Processes directly read/write to the shared memory
+- OS is out of the way after the setup
+
+```
+|---------|              |--------|
+|   P1   *----------------*  P2   |
+|_________|              |________|
+```
+
+* + OS is out of the way, no overheads
+* + No need for copying
+* - no defined APIs
+* - can generates more concurrency/asynchronous errors since the state is shared
+
+### Quis: Shared Memory Quiz
+
+Shared-memory based communication performs better than message passing communication
+
+- [ ] True
+- [ ] False
+- [x] It depends...
+
+The individual data exchange is cheap, but the operation of mapping memory between 2 processes is expensive, so, the amout of messages must be worth it.
