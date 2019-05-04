@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <pthread.h>
 
-#define BUFFER_SIZE 3
+#define BUFFER_SIZE 500
 
 int buffer[BUFFER_SIZE];  	/* shared buffer */
 int add = 0; /* place to add next element */
@@ -43,7 +43,7 @@ int main(int argc, char *argv[]) {
 void *producer(void *param) {
   int i;
 
-  for (i = 1; i <= 10; i++) {
+  for (i = 1; i <= 100000; i++) {
     /* Insert into buffer */
     printf("Producer: waiting for lock\n");
     pthread_mutex_lock(&m); //waits until lock is available
