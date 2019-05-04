@@ -6,6 +6,7 @@
 
 ## PThread Creation
 
+Functions available:
 ```c
 // Type
 pthread_t aThread; // type of a Thread
@@ -214,3 +215,34 @@ Thread number 0
 We've fixed the thread number issue, so they don't repeat anymore. However, we still can't guarantee the order.
 
 So, 1 is not possible, whereas 2 and 3 are.
+
+## Mutexes
+
+Functions available:
+```c
+pthread_mutex_t aMutex;
+
+int pthread_mutex_lock(pthread_mutex_t *mut);
+int pthread_mutex_unlock(pthread_mutex_t *mut);
+int pthread_mutex_init(pthread_mutex_t *mut, const pthread_mutexattr_t *attr); // we must use this to allocate the mutex
+int pthread_mutex_trylock(pthread_mutex_t *mut); // non-blocking
+int pthread_mutex_destroy(pthread_mutex_t *mut); // free
+```
+
+## Condition Variables
+
+Functions available:
+```c
+pthread_cond_t aCond;
+
+int pthread_cond_wait(pthread_cond_t *cond, pthread_mutex_t *mut); // release the lock if not cond, goes idle until condition matches
+int pthread_cond_signal(pthread_cond_t *cond);
+int pthread_cond_broadcast(pthread_cond_t *cond);
+
+int pthread_cond_init(pthread_cond_t *cond, const pthread_condattr_t *attr);
+int pthread_cond_destroy(pthread_cond_t *cond); // free
+```
+
+## Producer and Consumer Example
+
+
