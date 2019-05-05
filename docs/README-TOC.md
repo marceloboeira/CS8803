@@ -4,3 +4,4 @@
 * [Lesson 4](lessons/lesson-4#lesson-4)
 * [Lesson 5](lessons/lesson-5#lesson-5)
 * [Lesson 6](lessons/lesson-6#lesson-6)
+* [Lesson 7](lessons/lesson-7#lesson-7)

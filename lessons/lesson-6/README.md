@@ -325,3 +325,5 @@ void *consumer(void *param) {
   return 0;
 }
 ```
+
+See `examples/producer_consumer.c`.
