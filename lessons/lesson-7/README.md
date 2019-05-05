@@ -27,3 +27,17 @@ This program should adhere to the following constraints:
 * A bit weird to use the a `while` with a negative condition and then wait for the loop to go through and re-check the condition before executing the critical section
 
 See `exercises/priority_readers_writers.c`.
+
+## Simple Socket: Client
+
+Write a simple C program that creates, initializes, and connects a client socket to a server socket. You should provide a way to specify the connecting server address and port. This can be hardcoded or passed via the command line.
+
+See `exercises/socket_client.c`.
+See `exercises/socket_client.rs`.
+
+## Simple Socket: Server
+
+Write a simple C program that creates and initializes a server socket. Once initialized, the server should accept a client connection, close the connection, and then exit.
+
+See `exercises/socket_server.c`.
+See `exercises/socket_server.rs`.
