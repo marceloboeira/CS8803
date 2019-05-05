@@ -33,6 +33,7 @@ See `exercises/priority_readers_writers.c`.
 Write a simple C program that creates, initializes, and connects a client socket to a server socket. You should provide a way to specify the connecting server address and port. This can be hardcoded or passed via the command line.
 
 See `exercises/socket_client.c`.
+
 See `exercises/socket_client.rs`.
 
 ## Simple Socket: Server
@@ -40,4 +41,24 @@ See `exercises/socket_client.rs`.
 Write a simple C program that creates and initializes a server socket. Once initialized, the server should accept a client connection, close the connection, and then exit.
 
 See `exercises/socket_server.c`.
+
 See `exercises/socket_server.rs`.
+
+## The Echo Protocol
+
+In C, write a server and client that implement the fictitious "echo protocol". To implement the protocol, the server should accept any string from the client, and then return that string with all letters capitalized (if letters exist).
+
+Echo Protocol Example
+Client sends "Hello, wOrlD"
+Server echoes "HELLO, WORLD"
+
+As soon as the server responds to a client, it may close. And, as soon as the clients receives a response, it may close. Feel free to reuse portions of the Simple Socket: Client and Simple Socket: Server programs.
+
+
+See `exercises/echo_server.c`.
+
+See `exercises/echo_server.rs`.
+
+See `exercises/echo_client.c`.
+
+See `exercises/echo_client.rs`.

@@ -5,3 +5,5 @@ socket_client_rust
 socket_client_c
 echo_server_rust
 echo_server_c
+echo_client_rust
+echo_client_c
