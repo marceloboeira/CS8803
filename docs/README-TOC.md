@@ -6,3 +6,4 @@
 * [Lesson 6](lessons/lesson-6#lesson-6)
 * [Lesson 7](lessons/lesson-7#lesson-7)
 * [Lesson 8](lessons/lesson-8#lesson-8)
+* [Lesson 9](lessons/lesson-9#lesson-9)
