@@ -8,3 +8,4 @@
 * [Lesson 8](lessons/lesson-8#lesson-8)
 * [Lesson 9](lessons/lesson-9#lesson-9)
 * [Lesson 10](lessons/lesson-10#lesson-10)
+* [Lesson 11](lessons/lesson-11#lesson-11)
