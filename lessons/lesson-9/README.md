@@ -113,7 +113,7 @@ Process N
 
 ### ED - Event Driven Model
 
-<img src="ev1.png" width="400">
+<img src="ed1.png" width="400">
 
 * Event Dispatcher
   * Single Process
@@ -128,7 +128,7 @@ Process N
 
 #### Concurrency in the Event Driven Model
 
-<img src="ev2.png" width="400">
+<img src="ed2.png" width="400">
 
 * Similar to a State Machine - The main catch is that a event-driven system won't block on IO, it will iniciate the IO operation and trigger an event passing control to the dispatcher. That way, there is no IO await holding the whole program. When the IO operation finishes a new event is triggered, returning control to the event dispatcher for the next state of, let's say a request.
 
