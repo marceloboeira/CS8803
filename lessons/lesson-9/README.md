@@ -85,11 +85,11 @@ Process N
   * Send File
 ```
 
-* + Simple Programming
-* - High Memory Usage
-* - Costly Context Switch (copying memory tables, overriding CPU caches...)
-* - Hard to maintain shared state
-* - Tricky Socket Port Setup
+* `+` Simple Programming
+* `-` High Memory Usage
+* `-` Costly Context Switch (copying memory tables, overriding CPU caches...)
+* `-` Hard to maintain shared state
+* `-` Tricky Socket Port Setup
 
 ### MT - Multi Thread WebServer
 
@@ -104,12 +104,12 @@ Process N
   * Send File (T1) - Send File (TN)
 ```
 
-* + Shared address space
-* + Share State
-* + Cheap context switch
-* - More complex programming
-* - Requires Synchronization
-* - Support for Threads
+* `+` Shared address space
+* `+` Share State
+* `+` Cheap context switch
+* `-` More complex programming
+* `-` Requires Synchronization
+* `-` Support for Threads
 
 ### ED - Event Driven Model
 
@@ -128,8 +128,6 @@ Process N
 
 #### Concurrency in the Event Driven Model
 
-<img src="ed2.png" width="400">
-
 * Similar to a State Machine - The main catch is that a event-driven system won't block on IO, it will iniciate the IO operation and trigger an event passing control to the dispatcher. That way, there is no IO await holding the whole program. When the IO operation finishes a new event is triggered, returning control to the event dispatcher for the next state of, let's say a request.
 
 At the lowest level, the code needs to be triggered by events on sockets, files, and such. Luckly, both are represented in the OS by file descriptors.
@@ -145,3 +143,36 @@ What's the benefit of having a single thread for events:
 * no need for context switch
 * single address space
 
+### Problems with Event Driven Model
+
+* Handler issuing blocking IO calls to read data
+  * Solution: Async IO Operations
+    * The process/thread issues a system call
+    * The OS either knows about the stack and how to return the event properly OR
+    * The OS lets the process/thread know where to look for results later
+    * The process can continue
+
+<img src="ed2.png" width="400">
+
+Helpers:
+
+* Designated for Blocking I/O only
+* Pipe/Socket based comm with event/dispatcher
+  * `select()/poll()` are ok!
+* helper blocks, but main doesn't.
+
+
+### Models and Memory Requirement Quiz
+
+Of the three models mentioned so far, which model likely requires the **least amount of memory**?
+
+* [ ] Boss-Worker Model
+  * Concurrent Requests will demand more threads/memory usage
+* [ ] Pipeline Model
+  * Concurrent Requests will demand more threads/memory usage
+* [x] Event-Driven Model
+  * Extra memory is required only for helper processes
+
+## Experiments Section
+
+Nothing really interesting/new regarding the main topic of the course: Operating Systems ...
