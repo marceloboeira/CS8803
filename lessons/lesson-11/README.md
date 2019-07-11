@@ -127,3 +127,11 @@ More on Timeslicing next.
   * if a higher-prio task gets scheduled
   * ...
 * Using timeslices tasks are interleaved to ensure timesharing among other CPU tasks
+* Short tasks finish sooner
+* More responsive (alternates between tasks)
+* IO lenghty operations start sooner
+* Bad regarding overheads, because of context switches
+* Metrics
+  * Throughput: 0.25 tasks/s
+  * Wait time: (0 + 1 + 2)/3 = 1s
+  * Avg. Comp.: (1 + 12 + 3) / 3 = 16/3 = 5.33
