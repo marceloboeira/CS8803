@@ -135,3 +135,134 @@ More on Timeslicing next.
   * Throughput: 0.25 tasks/s
   * Wait time: (0 + 1 + 2)/3 = 1s
   * Avg. Comp.: (1 + 12 + 3) / 3 = 16/3 = 5.33
+
+### How long should a timeslice be?
+
+Balance the beneffits and overheads
+
+* For IO-bound tasks?
+* For CPU-bound tasks?
+
+#### CPU-Bound
+
+Imagine 2 CPU-bound tasks
+* T1: 10s
+* T2: 10s
+* CS: 0.1s
+
+<img src="cpu_bound_1.png" width="400">
+
+For such CPU bound tasks the user won't notice significant changes unless the task actually finishes, so avg wait and avg comp are not good metrics to compare to.
+
+However, throughput is a good metric to look into, since the notion of "performance" comes from CPU tasks being finished.
+
+The context switch time is really expensive here, considering a small time-slice. We add 1/10th of the tasks time on each context.
+
+#### IO-Bound
+
+Imagine 2 IO-bound tasks
+* T1: 10s
+* T2: 10s
+* CS: 0.1s
+
+<img src="io_bound_1.png" width="400">
+
+For io bound tasks, it seems, at first, that the slice size doens't matter, because the interruptions do not affect the IO operation itself, which happen async.
+
+Smaller timeslices are more responsive for IO bound tasks since it gives the chance to tasks to schedule other IOs more frequently.
+
+## Quiz: Timeslice
+
+On a single CPU sytem, considering the following:
+
+* 10 IO bound tasks and 1 CPU bound task
+* IO bound tasks issue an IO op every 1ms of CPU Computing
+* IO tasks take 10ms to complete
+* Context switch takes 0.1ms
+* All tasks are long-running
+
+What is the CPU utilization for a round-robin scheduler where timeslices are 1ms? and for a 10ms?
+
+* 1ms: 91% = (1ms / 1ms + 0.1ms)
+* 10ms: 95% = (10 * 1 + 1 * 10) / (10 * 1 + 10 * 0.1 + 1 * 0.1)
+
+
+From the perspective of CPU, having a bigger timeslice is nicer, since it allows the CPU-bound tasks to run, however, the throughput is lower, since the IO bound tasks have no time to be scheduled...
+
+## Runqueue Data Structures
+
+The runqueue is only logically a queue, it could be implemented as multiple queues, a Tree or something else too.
+
+If we want different timeslice values, we need either 2 different data structures and/or policies.
+
+### MLFQ - Multi-Level Feedback Queue
+
+Multi queue structure:
+
+* | timeslice 8ms      | Highest Priority | Suitable for IO intensive
+* | timeslice 16ms     | Medium Priority  | Suitable for Mix
+* | timeslice ∞ (FCFS) | Lowest Priority  | Suitable for CPU Intensive
+
+Problem:
+
+* How to know which task is CPU or IO intensive?
+  * History Based heuristics?
+
+We can also combine the queues and create a more combine algorithm.
+
+We always schedule the task on the first queue, high prio, low timeslice.
+
+If the task is completed during the timeslice, good, if not, it's more CPU intensive we'll target it for the second queue the next time, with a bigger timeslice. The same if it doesn't finish right away. The next time such task is scheduled, it goes to the appropriated queue right away.
+
+
+## Linux O(1) Scheduler
+
+* Runs in constant time, regardless of the amount of tasks
+* 140 levels of priorities (descending)
+* The timeslices go from 200ms down to 10ms
+* The default prio is 120
+* Negative values can be set to ensure priority
+* Gathers tasks heuristics
+* Task Sleep (IO) indicate that the task needs more priority (to run more often)
+* The opposite is valid for cpu-bound...
+* The data structure is based of 2 arrays of queues
+  * Active
+    * Primary (Next task to run)
+    * Constant Time To add (index based on priority)
+    * Constant Time to select (uses an instrution to get the first set bits in sequence of bits)
+    * Tasks remain here until the timeslice expires
+  * Expired
+    * Receives timeslice expired tasks
+    * Not currently active
+    * When there are no more tasks left on the active array the lists pointers get swapped.
+    * Tasks that exceed their timeslice get sort of penalized for it...
+* Introduced in 2.5v by Ingo Molnar
+* Replaced by CFS 2.6.23
+
+## Linux CFS (Completely Fair Scheduler)
+
+The main issue with O(1) is that tasks that expired won't have a chance to run until the others (active) finish, regardless of how long that takes. resulting in jitter on highly interactive tasks. Not fair!
+
+* It's the current scheduler for non realtime tasks
+* Redblacktree as data structure
+* Tasks are ordered by cpu runtime
+* The Tree is self balanced by priority to guarantee the leaves have similar sizes
+* The nodes on the left represent tasks with less cpu-time (should be scheduled sooner)
+* CFS Alg
+  * Always schedules tasks with the least amount of time on CPU
+  * Periodically adjusts (updates) the cpu runtime value (of the current tasks)
+  * Compares the value with the leftmost, if is smaller will continue executing
+  * if not, it preempts it and runs the next one
+  * The priority is set by adjusting high/low priorities by cpu runtime
+  * Selecting the task is still O(1) (the left most)
+  * Scheduling a taks takes O(log n)
+
+More info: https://algs4.cs.princeton.edu/33balanced/
+
+## Quiz: Linux Schedulers
+
+What was the main reason the O(1) was replaced by the CFS scheduler?
+
+* [ ] Scheduling a task under high loads took unpredictable amount of time - No, because it was O(1) already
+* [ ] Low priority tasks could wait indefinitely and starve - Not the main reason
+* [x] Interactive tasks could wait unpredictable amounts of time to be scheduled - The interactive tasks are important
