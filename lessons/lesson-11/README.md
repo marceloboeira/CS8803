@@ -266,3 +266,50 @@ What was the main reason the O(1) was replaced by the CFS scheduler?
 * [ ] Scheduling a task under high loads took unpredictable amount of time - No, because it was O(1) already
 * [ ] Low priority tasks could wait indefinitely and starve - Not the main reason
 * [x] Interactive tasks could wait unpredictable amounts of time to be scheduled - The interactive tasks are important
+
+## Scheduling on Multi-CPU Systems
+
+* SMP - Shared Memory Multi-Processor
+  * Multiple CPUs
+  * Each CPU has their own price cache
+  * Last level cache (LLC) might be shared
+  * DRAM is shared across CPUs
+* Multicore
+  * Multiple CPUs (internal cores)
+  * Shared Last level cache (LLC)
+  * DRAM is shared across cores
+
+----
+
+* Scheduling
+  * CPU affinity is a thing (for caching purposes)
+    * it helps to have internal L* caching for familiar tasks
+  * Load balanced per-cpu queues
+  * It is also possible to have multiple memory nodes
+  * NUMA - Non-Uniform memory access
+
+## HyperThreading
+
+aka.: chip/hardware/simultaneous multi-threading
+
+* Multi sets of registers that can represent different context
+* Makes the context switch cheaper
+* You can disable on boot time
+* CPU understand the contexts
+* enables to hide memory latency
+
+More info: https://s3.amazonaws.com/content.udacity-data.com/courses/ud923/references/ud923-fedorova-paper.pdf
+
+## CPU Bound or Memory Bound
+
+Hardoware Counters can help to define if a task is CPU or Memory bound based on Threads needs.
+
+e.g.: If the threads' LLC counter is high the memory might not fit on cache,...
+
+## Hardware Counter
+
+CPI - Cycles per instruction
+
+A thread that takes too many cycles per instruction is usually memory bound, whereas a thread that executes 1 or less instruction per cycle is usually CPU bound.
+
+Alexandras' experiment explores the possibility of using the CPI during scheduling, on hardware permisses.
